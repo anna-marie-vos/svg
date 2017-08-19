@@ -22,5 +22,4 @@ function animateAllLogos() {
     // TweenMax.staggerTo(['#logo1','#logo2','#logo3'], 1, {y:830}, 0.25)
     // TweenMax.staggerFrom(['#logo1','#logo2','#logo3'], 1, {y:830}, 0.25)
     TweenMax.staggerFromTo(['#logo1','#logo2','#logo3'], 1, {y:300}, {y:830, ease:Bounce.easeOut }, 0.25)
-
 }
