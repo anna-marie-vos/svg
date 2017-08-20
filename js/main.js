@@ -37,7 +37,17 @@ function showContainer() {
 	$cardContainer.css('display', 'block')
 }
 	// enter floor vegetation
+function enterFloorVegies() {
+	const fleavesTL = new TimelineMax()
+	fleavesTL
+		.staggerTo($floorLeaves, 1, {y:0, ease:Back.easeInOut},0.01)
+		.fromTo($tree,1.1,{scaleY:0.2, autoAlpha:0, transformOrigin:'centre bottom' },
+			{scaleY:1,autoAlpha:1, transformOrigin:'centre bottom', ease: Back.easeInOut})
+		.fromTo($tree,0.8,{scaleX:0.2, autoAlpha:0, transformOrigin:'centre bottom' },
+			{scaleX:1,autoAlpha:1, transformOrigin:'centre bottom', ease: Back.easeInOut},'-=0.9')
 
+	return fleavesTL
+}
 	// enter tree
 
 	// enter the greeting text
@@ -48,6 +58,7 @@ function showContainer() {
 		const masterTL = new TimelineMax()
 		masterTL
 			.add(clearStage(),'scene-clear-stage')
+			.add(enterFloorVegies(),'scene-floor-veggies')
 	}
 
 go()
