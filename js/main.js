@@ -16,6 +16,7 @@
 	const $nest = $('#NestAndLeaves')
 	const $tree = $('#tree_trunk')
 	const $cardContainer = $('.card.container')
+	const $body = $('body')
 	// clear stage
 function clearStage() {
 	const clearTL = new TimelineMax()
@@ -30,12 +31,12 @@ function clearStage() {
 		.set($tree, {autoAlpha:0} )
 		.set($floorLeaves, {y:'+=275', onComplete:showContainer})
 
+		function showContainer() {
+			$cardContainer.css('display', 'block')
+		}
 	return clearTL
 }
 
-function showContainer() {
-	$cardContainer.css('display', 'block')
-}
 	// enter floor vegetation
 function enterFloorVegies() {
 	const fleavesTL = new TimelineMax()
@@ -96,17 +97,42 @@ function enterTreeStuff() {
 	// enter the greeting text
 	function enterGreeting() {
 		const textTL = new TimelineMax()
-
 		textTL
-			.fromTo($textLine1, 1, {y:'-=50',autoAlpha:0},{y:0,autoAlpha:1})
+			.fromTo($textLine1, 1, {y:'-=50',autoAlpha:0},{y:0,autoAlpha:1, onComplete: startLoops})
 			.fromTo($textLine2, 1, {y:'-=25',autoAlpha:0},{y:0,autoAlpha:1})
 			.staggerFromTo($textGreeting, 0.5,{scale:2, autoAlpha:0,transformOrigin:'center center'},
 				{scale:1, autoAlpha:1,transformOrigin:'center center'},
 				0.2
 			)
-		return textTL
+
+
+	function startLoops() {
+		const colors = ['#edcc93', '#f7e3ae', '#f3ebcc','#edcc93'];
+		const bgTL = new TimelineMax({repeat:-1, repeatDelay:2, yoyo:true})
+		bgTL
+		.to($body, 3 , {backgroundColor: colors[0]})
+		.to($body, 3 , {backgroundColor: colors[1]},'+=1')
+		.to($body, 3 , {backgroundColor: colors[2]},'+=1')
+		.to($body, 3 , {backgroundColor: colors[3]},'+=1')
+
+		//Start falling leaves
+		TweenMax.set($backFallingLeaves, {y:-100,autoAlpha:0.2})
+		TweenMax.to("#brownLeaf",5+Math.random()*5,{y:'+=1200', autoAlpha: 1, onComplete: repeatFall, onCompleteParams: ["#brownLeaf"], ease:Linear.easeNone} )
+		TweenMax.to("#redLeaf",5+Math.random()*5,{y:'+=1200', autoAlpha: 1, onComplete: repeatFall,onCompleteParams: ["#redLeaf"], ease:Linear.easeNone} )
+		TweenMax.to("#orangeLeaf",5+Math.random()*5,{y:'+=1200', autoAlpha: 1, onComplete: repeatFall, onCompleteParams: ["#orangeLeaf"], ease:Linear.easeNone} )
+
+		function repeatFall(leafID) {
+			const range = Math.random() * 800,
+			offset = 400,
+			newXPosition = range - offset
+			TweenMax.set(leafID, {x:newXPosition, y:-100,rotation: Math.random()*360, autoAlpha:0.2})
+			TweenMax.to(leafID,5+Math.random()*5,{y:'+=1200', autoAlpha: 1, onComplete: repeatFall, onCompleteParams:[leafID], ease:Linear.easeNone} )
+		}
+
 	}
 
+	return textTL
+}
 	// the GO function ...to kick things all off
 	function go() {
 		console.log('go...');
