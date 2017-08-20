@@ -91,10 +91,21 @@ function enterTreeStuff() {
 			return blinkingTL
 		}
 
-
 	return treeStuffTL
 }
 	// enter the greeting text
+	function enterGreeting() {
+		const textTL = new TimelineMax()
+
+		textTL
+			.fromTo($textLine1, 1, {y:'-=50',autoAlpha:0},{y:0,autoAlpha:1})
+			.fromTo($textLine2, 1, {y:'-=25',autoAlpha:0},{y:0,autoAlpha:1})
+			.staggerFromTo($textGreeting, 0.5,{scale:2, autoAlpha:0,transformOrigin:'center center'},
+				{scale:1, autoAlpha:1,transformOrigin:'center center'},
+				0.2
+			)
+		return textTL
+	}
 
 	// the GO function ...to kick things all off
 	function go() {
@@ -104,6 +115,7 @@ function enterTreeStuff() {
 			.add(clearStage(),'scene-clear-stage')
 			.add(enterFloorVegies(),'scene-floor-veggies')
 			.add(enterTreeStuff(),'scene-tree-stuff')
+			.add(enterGreeting(),'scene-text-greetings')
 	}
 
 go()
